@@ -38,22 +38,18 @@ def scale(key1, key2, matches, amount):
         totaly += (y2-y1)/(y4-y3)
     return abs(totalx/amount), abs(totaly/amount)
 
-if __name__=="__main__":
+def score(first, second):
+    alpha = cv2.imread(first["path"], 0)
+    alpha = rotate(alpha, first["direction"])
+    beta = cv2.imread(second["path"], 0)
+    beta = rotate(alpha, second["direction"]
     
-    left = cv2.imread("img/right.jpg", 0)
-    right = cv2.imread("img/left.jpg", 0)
-    left = rotate(left, "SOUTH")
-    '''
-    right = cv2.imread("img/right.jpg", 0) 
-    left = cv2.imread("img/left.jpg", 0)
-    right = rotate(right, "SOUTH")
-    '''
     # Initiate the SIFT detector
     orb= cv2.ORB()
 
     # find the keypoints and descriptors with SIFT
-    kp1, des1 = orb.detectAndCompute(left, None)
-    kp2, des2 = orb.detectAndCompute(right, None)
+    kp1, des1 = orb.detectAndCompute(alpha, None)
+    kp2, des2 = orb.detectAndCompute(beta, None)
 
     # create BFMatcher object
     bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
@@ -65,5 +61,4 @@ if __name__=="__main__":
     matches = sorted(matches, key = lambda x:x.distance)
     
     scale = scale(kp1, kp2, matches, 1)
-    print scale
-    print analyze(kp1, kp2, matches, scale)
+    return analyze(kp1, kp2, matches, scale)
