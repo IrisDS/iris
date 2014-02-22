@@ -13,7 +13,7 @@ def analyze(key1, key2, matches, scale):
     scorex = 0
     scorey = 0
     for match in matches:
-        x1, y1 = key1[match.trainIdx].pt
+        x1, y1 = key1[match.queryIdx].pt
         x2, y2 = key2[match.trainIdx].pt
         if x1>x2*scale:
             scorex += 1
@@ -37,8 +37,9 @@ def scale(key1, key2, matches, amount):
     return total/amount
 
 if __name__=="__main__":
-    left = cv2.imread("img/left.jpg", 1)
-    right = cv2.imread("img/right.jpg", 0)
+    left = cv2.imread("img/right.jpg", 0)
+    right = cv2.imread("img/left.jpg", 0)
+    right = rotate(right, "SOUTH")
 
     # Initiate the SIFT detector
     orb= cv2.ORB()
