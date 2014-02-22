@@ -34,24 +34,27 @@ def scale(key1, key2, matches, amount):
         x4, y4 = key2[matches[i+1].trainIdx].pt
         total+= sqrt(pow(x2-x1, 2) + pow(y2-y1, 2))/sqrt(pow(x4-x3, 2) +
                 pow(y4-y3,2))
-    print total/amount
+    return total/amount
 
-left = cv2.imread("img/left.jpg", 0)
-right = cv2.imread("img/right.jpg", 0)
+if __name__=="__main__":
+    left = cv2.imread("img/left.jpg", 1)
+    right = cv2.imread("img/right.jpg", 0)
 
-# Initiate the SIFT detector
-orb= cv2.ORB()
+    # Initiate the SIFT detector
+    orb= cv2.ORB()
 
-# find the keypoints and descriptors with SIFT
-kp1, des1 = orb.detectAndCompute(left, None)
-kp2, des2 = orb.detectAndCompute(right, None)
+    # find the keypoints and descriptors with SIFT
+    kp1, des1 = orb.detectAndCompute(left, None)
+    kp2, des2 = orb.detectAndCompute(right, None)
 
-# create BFMatcher object
-bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+    # create BFMatcher object
+    bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
 
-# Match Descriptors
-matches = bf.match(des1, des2)
+    # Match Descriptors
+    matches = bf.match(des1, des2)
 
-#Sort them in order of distance
-matches = sorted(matches, key = lambda x:x.distance)
-
+    #Sort them in order of distance
+    matches = sorted(matches, key = lambda x:x.distance)
+    
+    scale = scale(kp1, kp2, matches, 15)
+    print analyze(kp1, kp2, matches, scale)
