@@ -39,7 +39,7 @@ def scale(key1, key2, matches, amount):
 if __name__=="__main__":
     left = cv2.imread("img/right.jpg", 0)
     right = cv2.imread("img/left.jpg", 0)
-    right = rotate(right, "SOUTH")
+    left = rotate(left, "SOUTH")
 
     # Initiate the SIFT detector
     orb= cv2.ORB()
