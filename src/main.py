@@ -39,8 +39,7 @@ def scale(key1, key2, matches, amount):
     return abs(totalx/amount), abs(totaly/amount)
 
 if __name__=="__main__":
-
-    '''
+    
     left = cv2.imread("img/right.jpg", 0)
     right = cv2.imread("img/left.jpg", 0)
     left = rotate(left, "SOUTH")
@@ -48,7 +47,7 @@ if __name__=="__main__":
     right = cv2.imread("img/right.jpg", 0) 
     left = cv2.imread("img/left.jpg", 0)
     right = rotate(right, "SOUTH")
-    
+    '''
     # Initiate the SIFT detector
     orb= cv2.ORB()
 
@@ -65,6 +64,6 @@ if __name__=="__main__":
     #Sort them in order of distance
     matches = sorted(matches, key = lambda x:x.distance)
     
-    scale = scale(kp1, kp2, matches, 15)
+    scale = scale(kp1, kp2, matches, 1)
     print scale
     print analyze(kp1, kp2, matches, scale)
