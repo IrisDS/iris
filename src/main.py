@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+from math import sqrt, pow
 
 def rotate(img, direction):
     orientation = {"NORTH" : 0, "EAST" : -90, "SOUTH" : 180, "WEST" : 90}
@@ -8,26 +9,36 @@ def rotate(img, direction):
     dst = cv2.warpAffine(img, M, (cols,rows))
     return dst
 
-def analyze(key1, key2, matches): 
+def analyze(key1, key2, matches, scale): 
     scorex = 0
     scorey = 0
     for match in matches:
         x1, y1 = key1[match.trainIdx].pt
         x2, y2 = key2[match.trainIdx].pt
-        if x1>x2:
+        if x1>x2*scale:
             scorex += 1
         else:
             scorex -= 1
-        if y1>y2:
+        if y1>y2*scale:
             scorey += 1
         else:
             scorey -= 1
     return scorex, scorey
 
-            
+def scale(key1, key2, matches, amount):
+    total = 0.0
+    for i in range(amount):
+        x1, y1 = key1[matches[i].queryIdx].pt
+        x2, y2 = key1[matches[i+1].queryIdx].pt
+        x3, y3 = key2[matches[i].trainIdx].pt
+        x4, y4 = key2[matches[i+1].trainIdx].pt
+        total+= sqrt(pow(x2-x1, 2) + pow(y2-y1, 2))/sqrt(pow(x4-x3, 2) +
+                pow(y4-y3,2))
+    print total/amount
+
 left = cv2.imread("img/left.jpg", 0)
 right = cv2.imread("img/right.jpg", 0)
-right = rotate(right, "SOUTH")
+
 # Initiate the SIFT detector
 orb= cv2.ORB()
 
@@ -44,10 +55,3 @@ matches = bf.match(des1, des2)
 #Sort them in order of distance
 matches = sorted(matches, key = lambda x:x.distance)
 
-#draw first 10 matches
-img3 = None
-img3 = cv2.drawMatches(left, kp1, right, kp2, matches[:10], outImg=img3, flags=2)
-
-print analyze(kp1, kp2, matches)
-
-cv2.imwrite( "Test.jpg", img3)
