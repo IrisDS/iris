@@ -8,6 +8,23 @@ def rotate(img, direction):
     dst = cv2.warpAffine(img, M, (cols,rows))
     return dst
 
+def analyze(key1, key2, matches): 
+    scorex = 0
+    scorey = 0
+    for match in matches:
+        x1, y1 = key1[match.trainIdx].pt
+        x2, y2 = key2[match.trainIdx].pt
+        if x1>x2:
+            scorex += 1
+        else:
+            scorex -= 1
+        if y1>y2:
+            scorey += 1
+        else:
+            scorey -= 1
+    return scorex, scorey
+
+            
 left = cv2.imread("img/left.jpg", 0)
 right = cv2.imread("img/right.jpg", 0)
 right = rotate(right, "SOUTH")
@@ -31,9 +48,6 @@ matches = sorted(matches, key = lambda x:x.distance)
 img3 = None
 img3 = cv2.drawMatches(left, kp1, right, kp2, matches[:10], outImg=img3, flags=2)
 
-for match in matches:
-    x, y = kp1[match.trainIdx].pt
-    cv2.circle(left,(int(x), int(y)), 2, 3)
+print analyze(kp1, kp2, matches)
 
 cv2.imwrite( "Test.jpg", img3)
-cv2.imwrite( "left.jpg", left)
