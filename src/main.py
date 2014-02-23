@@ -100,10 +100,8 @@ if __name__ == "__main__":
     fatdump={}
     scrs={}
     for i in f["nodes"]:
-        ips=f["nodes"][t]['ip']
-        imgs=f["nodes"][t]["image"]
-        fatdump[ips]=t
-        fatdump[imgs]=t
+        ips=i['ip']
+        fatdump[t]=i['ip']
         #score wrapper
         h=0
         for j in f["nodes"]:
