@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 from math import sqrt, pow, acos
+sample = 5
 
 def rotate(imgl, key1, key2, matches):
     x1, y1 = key1[matches[1].queryIdx].pt
@@ -22,24 +23,27 @@ def rotate(imgl, key1, key2, matches):
 
 def analyze(key1, key2, matches, scale): 
     totalx, totaly = 0, 0
-    for i in range(1):
-        x1, y1 = key1[matches[0].queryIdx].pt
-        x2, y2 = key2[matches[0].trainIdx].pt
-        totalx, totaly = x2-x1*scale[0], y2-y1*scale[1]
-    return totalx/1, totaly/1
+    for i in range(sample):
+        x1, y1 = key1[matches[i].queryIdx].pt
+        x2, y2 = key2[matches[i].trainIdx].pt
+        totalx += x2-x1*scale[0]
+        totaly += y2-y1*scale[1]
+    return totalx/sample, totaly/sample
 
 def scale(key1, key2, matches, amount):
     totalx = 0
     totaly = 0
-    for i in range(3):
+    for i in range(sample):
         x1, y1 = key1[matches[i].queryIdx].pt
         x2, y2 = key1[matches[i+1].queryIdx].pt
         x3, y3 = key2[matches[i].trainIdx].pt
         x4, y4 = key2[matches[i+1].trainIdx].pt
-        totalx += abs(x2-x1)/abs(x4-x3)
-        totaly += abs(y2-y1)/abs(y4-y3)
-    print totalx/3, totaly/3
-    return totalx/3, totaly/3
+        if abs(x4-x3)>1:
+            totalx += abs(x2-x1)/abs(x4-x3)
+        if abs(y4-y3)>1:
+            totaly += abs(y2-y1)/abs(y4-y3)
+    print totalx/sample, totaly/sample
+    return totalx/sample, totaly/sample
 
 def score(first, second):
     alpha = cv2.imread(first["path"], 0)
