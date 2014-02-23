@@ -1,20 +1,16 @@
 {
-	"nodes" :[
+	"nodes" : [
 	{
-    "ip": "10.1.14.54",
-    "image": "s3img/img000.jpg"
+    	"ip": "10.1.14.54",
+    	"image": "img/a.jpg"
 	},
 	{
-    "ip": "10.1.14.55",
-    "image": "s3img/img001.jpg"
+    	"ip": "10.1.14.55",
+    	"image": "img/b.jpg"
 	},
 	{
-    "ip": "10.1.14.56",
-    "image": "s3img/img002.jpg"
-	},
-	{
-    "ip": "10.1.14.57",
-    "image": "s3img/img003.jpg"
+    	"ip": "10.1.14.56",
+    	"image": "img/c.jpg"
 	}
     ]
 }

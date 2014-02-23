@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 from math import sqrt, pow, acos
+import json
 sample = 5
 
 def rotate(imgl, key1, key2, matches):
@@ -46,37 +47,11 @@ def scale(key1, key2, matches, amount):
             totaly += abs(y2-y1)/abs(y4-y3)
         else:
             totaly += abs(y2-y1)
-    print totalx/sample, totaly/sample
     return totalx/sample, totaly/sample
 
-def json():
-    myfile="manfest.json"
-    data = open(myfile,'r')
-    f=json.load(data)
-
-    #head wrapper
-    t=0
-    fatdump={}
-    scrs={}
-    for i in f["nodes"]:
-        ips=f["nodes"][t]['ip']
-        imgs=f["nodes"][t]["image"]
-        fatdump[ips]=t
-        fatdump[imgs]=t
-        #score wrapper
-        h=0
-        for j in f["nodes"]:
-            scrs[t,h]=score[t,h]
-            #scrs[t,h]=t+h
-            fatdump["scr"]=scrs
-            h+=1
-        t+=1
-
-    print fatdump
-
 def score(first, second):
-    alpha = cv2.imread(first["path"], 0)
-    beta = cv2.imread(second["path"], 0)
+    alpha = cv2.imread(first, 0)
+    beta = cv2.imread(second, 0)
     
     # Initiate the SIFT detector
     orb= cv2.ORB()
@@ -114,3 +89,28 @@ def score(first, second):
     
     imgscale = scale(kp1, kp2, matches, 1)
     return analyze(kp1, kp2, matches, imgscale)
+
+if __name__ == "__main__":
+    myfile="testmanifest.json"
+    data = open(myfile,'r')
+    f=json.load(data)
+
+    #head wrapper
+    t=0
+    fatdump={}
+    scrs={}
+    for i in f["nodes"]:
+        ips=f["nodes"][t]['ip']
+        imgs=f["nodes"][t]["image"]
+        fatdump[ips]=t
+        fatdump[imgs]=t
+        #score wrapper
+        h=0
+        for j in f["nodes"]:
+            scrs[t,h]=score(f["nodes"][t]["image"],f["nodes"][h]["image"])
+            fatdump["scr"]=scrs
+            h+=1
+            
+        t+=1
+
+    print(fatdump)
