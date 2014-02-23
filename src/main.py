@@ -37,7 +37,7 @@ def analyze(key1, key2, matches, scale):
         x2, y2 = key2[matches[i].trainIdx].pt
         totalx += x2-x1*scale[0]
         totaly += y2-y1*scale[1]
-    return totalx/sample, totaly/sample
+    return totalx/sample
 
 def scale(key1, key2, matches, amount):
     totalx = 0
@@ -107,20 +107,20 @@ if __name__ == "__main__":
     #head wrapper
     t=0
     fatdump={}
-    scrs={}
+    scrs=[]
     nodes={}
     for i in f["nodes"]:
         ips=i['ip']
-        nodes[t]=i['ip']
-        fatdump["nodes"]=nodes
         #score wrapper
         h=0
         for j in f["nodes"]:
-            pos=("(" + str(t)+", "+str(h)+")")
-            scrs[pos]=score(f["nodes"][t]["image"],f["nodes"][h]["image"])
-            fatdump["scr"]=scrs
-            h+=1
-            
+            val = score(f["nodes"][t]["image"],f["nodes"][h]["image"])
+            scrs.append({
+                "ip1" : ips,
+                "ip2" : j["ip"],
+                "score" : val}
+            )
+            h+=1 
         t+=1
-
+    fatdump["scrs"]=scrs
     print(fatdump)
