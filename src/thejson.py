@@ -89,7 +89,7 @@ def score(first, second):
 
 
 if __name__ == "__main__":
-    myfile="manfest.json"
+    myfile="testmanifest.json"
     data = open(myfile,'r')
     f=json.load(data)
 
@@ -115,4 +115,3 @@ if __name__ == "__main__":
 
 print fatdump
 #print json.dumps(fatdump, sort_keys=True, indent=4,separators=(',',': '))
-
