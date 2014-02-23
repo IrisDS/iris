@@ -40,8 +40,12 @@ def scale(key1, key2, matches, amount):
         x4, y4 = key2[matches[i+1].trainIdx].pt
         if abs(x4-x3)>1:
             totalx += abs(x2-x1)/abs(x4-x3)
+        else:
+            totalx += abs(x2-x1)
         if abs(y4-y3)>1:
             totaly += abs(y2-y1)/abs(y4-y3)
+        else:
+            totaly += abs(y2-y1)
     print totalx/sample, totaly/sample
     return totalx/sample, totaly/sample
 
