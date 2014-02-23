@@ -113,7 +113,8 @@ if __name__ == "__main__":
         #score wrapper
         h=0
         for j in f["nodes"]:
-            scrs[t,h]=score(f["nodes"][t]["image"],f["nodes"][h]["image"])
+            pos=("(" + str(t)+", "+str(h)+")")
+            scrs[pos]=score(f["nodes"][t]["image"],f["nodes"][h]["image"])
             fatdump["scr"]=scrs
             h+=1
             
