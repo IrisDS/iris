@@ -107,9 +107,11 @@ if __name__ == "__main__":
     t=0
     fatdump={}
     scrs={}
+    nodes={}
     for i in f["nodes"]:
         ips=i['ip']
-        fatdump[t]=i['ip']
+        nodes[t]=i['ip']
+        fatdump["nodes"]=nodes
         #score wrapper
         h=0
         for j in f["nodes"]:
