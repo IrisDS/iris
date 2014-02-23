@@ -91,7 +91,7 @@ def score(first, second):
     return analyze(kp1, kp2, matches, imgscale)
 
 if __name__ == "__main__":
-    myfile="testmanifest.json"
+    myfile="manifest.json"
     data = open(myfile,'r')
     f=json.load(data)
 
