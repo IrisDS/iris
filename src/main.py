@@ -11,12 +11,19 @@ def rotate(imgl, key1, key2, matches):
     x3, y3 = key2[matches[1].trainIdx].pt
     x4, y4 = key2[matches[2].trainIdx].pt
 
+
     dotproduct = ((x2-x1)*(x4-x3)) + ((y2-y1)*(y4-y3))
     dist_l = sqrt(pow((x2-x1),2) + pow((y2-y1),2))
     dist_r = sqrt(pow((x4-x3),2) + pow((y4-y3),2))
+    
     cos_theta = dotproduct/(dist_l*dist_r)
-    theta = acos(cos_theta)
-    theta = (theta/3.14159265359)*180
+#    print "cos_theta:", cos_theta
+    
+    if cos_theta >= 1.0:
+	theta = 0.0;
+    else:
+	theta = acos(cos_theta)
+	theta = (theta/3.14159265359)*180
     
     rowsl,colsl = imgl.shape
     M = cv2.getRotationMatrix2D((colsl/2, rowsl/2), theta, 1)
@@ -48,12 +55,13 @@ def scale(key1, key2, matches, amount):
             totaly += abs(y2-y1)/abs(y4-y3)
         else:
             totaly += abs(y2-y1)
+#    print totalx/sample, totaly/sample
     return totalx/sample, totaly/sample
 
 def score(first, second):
     alpha = cv2.imread(first, 0)
     beta = cv2.imread(second, 0)
-    
+
     # Initiate the SIFT detector
     orb= cv2.ORB()
 
@@ -100,13 +108,16 @@ if __name__ == "__main__":
     t=0
     fatdump={}
     scrs={}
+    nodes={}
     for i in f["nodes"]:
         ips=i['ip']
-        fatdump[t]=i['ip']
+        nodes[t]=i['ip']
+        fatdump["nodes"]=nodes
         #score wrapper
         h=0
         for j in f["nodes"]:
-            scrs[t,h]=score(f["nodes"][t]["image"],f["nodes"][h]["image"])
+            pos=("(" + str(t)+", "+str(h)+")")
+            scrs[pos]=score(f["nodes"][t]["image"],f["nodes"][h]["image"])
             fatdump["scr"]=scrs
             h+=1
             
