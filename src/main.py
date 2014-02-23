@@ -23,17 +23,17 @@ def rotate(imgl, key1, key2, matches):
 def analyze(key1, key2, matches, scale): 
     x1, y1 = key1[matches[0].queryIdx].pt
     x2, y2 = key2[matches[0].trainIdx].pt
-    x2, y2 = x2*scale[0], y2*scale[1]
+    x1, y1 = x1*scale[0], y1*scale[1]
     return x2-x1, y2-y1
 
 def scale(key1, key2, matches, amount):
     x1, y1 = key1[matches[0].queryIdx].pt
     x2, y2 = key1[matches[1].queryIdx].pt
     x3, y3 = key2[matches[0].trainIdx].pt
-    x4, y4 =  key2[matches[1].trainIdx].pt
-    print (x2,x1,x4,x3)
+    x4, y4 = key2[matches[1].trainIdx].pt
     totalx = abs(x2-x1)/abs(x4-x3)
     totaly = abs(y2-y1)/abs(y4-y3)
+    print totalx, totaly
     return totalx, totaly
 
 def score(first, second):
@@ -57,7 +57,6 @@ def score(first, second):
     matches = sorted(matches, key = lambda x:x.distance)
     
     alpha, angle = rotate(alpha, kp1, kp2, matches)
-    print angle
 
     # Initiate the SIFT detector
     orb= cv2.ORB()
@@ -74,6 +73,6 @@ def score(first, second):
 
     #Sort them in order of distance
     matches = sorted(matches, key = lambda x:x.distance)
-
+    
     imgscale = scale(kp1, kp2, matches, 1)
     return analyze(kp1, kp2, matches, imgscale)
