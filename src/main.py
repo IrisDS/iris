@@ -42,7 +42,7 @@ def score(first, second):
     alpha = cv2.imread(first["path"], 0)
     alpha = rotate(alpha, first["direction"])
     beta = cv2.imread(second["path"], 0)
-    beta = rotate(alpha, second["direction"]
+    beta = rotate(alpha, second["direction"])
     
     # Initiate the SIFT detector
     orb= cv2.ORB()
