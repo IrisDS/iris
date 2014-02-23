@@ -16,7 +16,7 @@ def rotate(imgl, key1, key2, matches):
     dist_r = sqrt(pow((x4-x3),2) + pow((y4-y3),2))
     
     cos_theta = dotproduct/(dist_l*dist_r)
-    print "cos_theta:", cos_theta
+#    print "cos_theta:", cos_theta
     
     if cos_theta >= 1.0:
 	theta = 0.0;
@@ -54,7 +54,7 @@ def scale(key1, key2, matches, amount):
             totaly += abs(y2-y1)/abs(y4-y3)
         else:
             totaly += abs(y2-y1)
-    print totalx/sample, totaly/sample
+#    print totalx/sample, totaly/sample
     return totalx/sample, totaly/sample
 
 def score(first, second):
