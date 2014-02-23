@@ -15,14 +15,13 @@ def analyze(key1, key2, matches, scale):
     for match in matches:
         x1, y1 = key1[match.queryIdx].pt
         x2, y2 = key2[match.trainIdx].pt
-        print (x1, y1), (x2*scale[0], y2*scale[1])
         if x1>x2*scale[0]:
             scorex += 1
-        else:
+        if x1<x2*scale[0]:
             scorex -= 1
         if y1>y2*scale[1]:
             scorey += 1
-        else:
+        if y1<y2*scale[1]:
             scorey -= 1
     return scorex, scorey
 
@@ -42,7 +41,7 @@ def score(first, second):
     alpha = cv2.imread(first["path"], 0)
     alpha = rotate(alpha, first["direction"])
     beta = cv2.imread(second["path"], 0)
-    beta = rotate(alpha, second["direction"])
+    beta = rotate(beta, second["direction"])
     
     # Initiate the SIFT detector
     orb= cv2.ORB()
@@ -60,5 +59,5 @@ def score(first, second):
     #Sort them in order of distance
     matches = sorted(matches, key = lambda x:x.distance)
     
-    scale = scale(kp1, kp2, matches, 1)
-    return analyze(kp1, kp2, matches, scale)
+    imgscale = scale(kp1, kp2, matches, 1)
+    return analyze(kp1, kp2, matches, imgscale)
