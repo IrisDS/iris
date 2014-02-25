@@ -17,7 +17,6 @@ def rotate(imgl, key1, key2, matches):
     dist_r = sqrt(pow((x4-x3),2) + pow((y4-y3),2))
     
     cos_theta = dotproduct/(dist_l*dist_r)
-#    print "cos_theta:", cos_theta
     
     if cos_theta >= 1.0:
 	theta = 0.0;
@@ -55,7 +54,6 @@ def scale(key1, key2, matches, amount):
             totaly += abs(y2-y1)/abs(y4-y3)
         else:
             totaly += abs(y2-y1)
-#    print totalx/sample, totaly/sample
     return totalx/sample, totaly/sample
 
 def score(first, second):
@@ -97,6 +95,10 @@ def score(first, second):
     matches = sorted(matches, key = lambda x:x.distance)
     
     imgscale = scale(kp1, kp2, matches, 1)
+    
+    img3 = None
+    img3 = cv2.drawMatches(alpha,kp1,beta,kp2,matches[:10],img3,flags=2)
+    cv2.imwrite("out.jpg", img3)
     return analyze(kp1, kp2, matches, imgscale)
 
 if __name__ == "__main__":
